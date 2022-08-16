@@ -2,7 +2,7 @@ import argparse
 import logging
 
 import requests
-from bs4 import BeautifulSoup 
+from bs4 import BeautifulSoup
 
 logger = None
 
@@ -11,30 +11,40 @@ def parse_args():
     parser.add_argument("-d", "--debug", help = "Enable debug logging", action="store_true")
     return parser.parse_args()
 
-def configure_logging(level=logging.INFO):
+def configure_logging(level= logging.INFO):
     global logger
     logger = logging.getLogger("crawler")
     logger.setLevel(level)
-    screen_handler = logging.StreamHandler()
+    screen_handler =logging.StreamHandler()
     screen_handler.setLevel(level)
     formatter = logging.Formatter("[%(levelname)s] : %(filename)s(%(lineno)d) : %(message)s")
     screen_handler.setFormatter(formatter)
     logger.addHandler(screen_handler)
 
-def crawl(source):
-    response = requests.get(source)
-    soup = BeautifulSoup(response.content)
-    track=soup.find('table', {'class':'tracklist'})
-    headings =track.find_all('h3')
-    for heading in headings:
-        print(heading.text)
-        print(heading.a)
+def get_artists_name(base):
+    resp =requests.get(base)
+    soup = BeautifulSoup(resp.content,"lxml")
+    trackl_ists = soup.find("table", attrs= {"class": "tracklist"})
+    track_link = trackl_ists.find_all('a')
+    for link in track_link:
+        if link.find('img') not in link:
+            print("artists name:",link.text) 
 
-    logger.debug("Crawling starting")
-    for i in range(4):
-        logger.debug("Fetching URL %s", i)
-        print ("https://....")
-    logger.debug("Completed crawling")
+def get_songs(artists_name):
+    resp = requests.get(artists_name)
+    soup = BeautifulSoup(resp.content,'lxml')
+    songs = soup.find("table", attrs= {"class": "tracklist"})
+    song_link = songs.find_all('a')
+    for songs in song_link:
+        if songs.find('img') not in songs:
+            print(songs.text)
+
+def get_song_lyrics(song):
+    resp = requests.get(song)
+    soup = BeautifulSoup(resp.content,'lxml')
+    lyrics = soup.find("p",attrs = {"id": "songLyricsDiv"})
+    print(lyrics.text)
+
 
 def main():
     args = parse_args()
@@ -42,11 +52,11 @@ def main():
         configure_logging(logging.DEBUG)
     else:
         configure_logging(logging.INFO)
-    logger.debug("Here's a debug message")
-    logger.info("Here's an info message!")
-    logger.warning("Here's an warning message!")
-    logger.critical("Here's an critical message!")
-    crawl('http://www.songlyrics.com/top-artists-lyrics.html')
+
+    get_artists_name("http://www.songlyrics.com/top-artists-lyrics.html")
+    get_songs("http://www.songlyrics.com/hillsong-lyrics/")
+    get_song_lyrics("http://www.songlyrics.com/hillsong/oceans-where-feet-may-fail-lyrics/")
+
 
 if __name__ == "__main__":
     main()
