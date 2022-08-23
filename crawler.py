@@ -1,17 +1,21 @@
 import argparse
 import logging
+from unicodedata import name
 
 import requests
 from bs4 import BeautifulSoup 
+from sqlalchemy.orm import Session 
 
-import db
+
+import sa
+import web
 
 logger = None
 
 def parse_args():
     parser = argparse.ArgumentParser(description = "Web crawler")
     parser.add_argument("-d", "--debug", help = "Enable debug logging", action="store_true")
-    parser.add_argument("--db", help="Name of database to use", action="store", default="lyrics")
+    parser.add_argument("--sa", help="Name of database to use", action="store", default="lyrics")
     subcommands = parser.add_subparsers(help="Commands", dest="command", required=True)
     subcommands.add_parser("initdb", help="Initialise the database")
     subcommands.add_parser("crawl", help="Perform a crawl")
@@ -58,22 +62,37 @@ def song_lyrics(url):
     paragraph=soup.find('p', {'id':'songLyricsDiv'})
     return paragraph.text
 
-def create_tables(db_name):
-    conn = db.get_connection(db_name)
-    with conn.cursor() as cursor:
-        with open("init.sql") as f:
-            sql = f.read()
-            cursor.execute(sql)
-    conn.commit()
-    conn.close()
+# def create_tables(db_name):
+#     conn = sa.get_connection(db_name)
+#     with conn.cursor() as cursor:
+#         with open("init.sql") as f:
+#             sql = f.read()
+#             cursor.execute(sql)
+#     conn.commit()
+#     conn.close()
+
+     # conn = get_connection("lyrics")
+#     # cur = conn.cursor()
+#     # cur.execute("SELECT name FROM artist")
+#     # results = [x[0] for x in cur.fetchall()]
+#     # return results
 
 def insert_data_to_database(url):
-    for artist_name, artist_url in artist(url).items():
-        artist_id = db.add_artist(artist_name)
-        for songs, song_url in get_songs_list(artist_url).items():
-            lyrics = song_lyrics(song_url)
-            db.add_song(songs, artist_id, lyrics)
+    with sa.get_session() as session:
+        for artist_name, artist_url in artist(url).items():
+            artist_ = sa.Artists(name =artist_name)
+            session.add(artist_)
+            session.commit()
+            session.refresh(artist_)
+            print(artist_.id)
 
+            for songs, song_url in get_songs_list(artist_url).items():
+                lyrics = song_lyrics(song_url)
+                song = sa.Songs(name=artist_name,lyrics=lyrics,artist_id= artist_)
+                session.add(song)
+                session.commit()
+
+        session.close()
 
 def main():
     args = parse_args()
@@ -93,8 +112,14 @@ def main():
     
     elif args.command == "initdb":
         logger.info("Initialising database")
-        create_tables(args.db)
+       # create_tables(args.sa)
+        sa.drop_table()
         insert_data_to_database(url_address)
+    
+    elif args.command == "web":
+        logger.info("starting web server")
+        web.app.run()
+    
     else:
         logger.warning("%s not implemented", args.command)
 
