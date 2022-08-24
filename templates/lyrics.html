@@ -1,0 +1,10 @@
+{% extends "base.html"%}
+{%block content%}
+    
+    <center><h1>{{song_name}}</h1></center>
+    <div>
+        {% autoescape off %}
+        <em><center>{{lyrics}}</center></em>
+        {% endautoescape %}
+    </div>
+    {% endblock%}

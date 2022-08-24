@@ -1,4 +1,5 @@
 import argparse
+from distutils.log import debug
 import logging
 from unicodedata import name
 
@@ -8,7 +9,8 @@ from sqlalchemy.orm import Session
 
 
 import sa
-import web
+#import web
+import app
 
 logger = None
 
@@ -87,8 +89,9 @@ def insert_data_to_database(url):
             print(artist_.id)
 
             for songs, song_url in get_songs_list(artist_url).items():
+                print(songs)
                 lyrics = song_lyrics(song_url)
-                song = sa.Songs(name=artist_name,lyrics=lyrics,artist_id= artist_)
+                song = sa.Songs(name=songs,lyrics=lyrics,artist= artist_)
                 session.add(song)
                 session.commit()
 
@@ -118,7 +121,7 @@ def main():
     
     elif args.command == "web":
         logger.info("starting web server")
-        web.app.run()
+        app.app.run(debug=True)
     
     else:
         logger.warning("%s not implemented", args.command)

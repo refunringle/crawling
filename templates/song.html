@@ -1,0 +1,13 @@
+{% extends "base.html"%}
+{%block content%}
+    <div>
+        <h1>songs</h1>
+        <p>we have {{nartist}} artists on our system</p>
+        <ol>
+            <p>This is the list of songs! </p>
+            {% for song in songs%}
+            <a href="{{url_for('song',song_id=song.id)}}"><li>{{song.name}}</li></a>
+            {%endfor%}
+        </ol>
+    </div>
+    {% endblock%}`

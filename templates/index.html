@@ -1,0 +1,23 @@
+{% extends "base.html"%}
+{%block content%}
+    <div class="roug">
+        <h1>Artists</h1>
+        <p>we have {{no_artist}} artists on our system</p>
+
+            <ol>
+                <p>This is the list of Artists! </p>
+                {% for artist in artists %}
+                <a href="{{url_for("artist", artist_id = artist.id)}}"><li>{{artist.name}}</li></a>
+                {% endfor %}
+            </ol>
+
+    </div>
+    <style>
+        body{
+            background-color: cadetblue;
+
+        }
+
+
+    </style>
+    {%endblock%}
