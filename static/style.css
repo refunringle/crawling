@@ -1,0 +1,35 @@
+
+
+*{
+    max-width: 100%;
+
+}
+
+ul li {
+    background: #cce5ff;
+   color: darkblue;
+   margin: 5px;
+}
+h1{
+    color:antiquewhite;
+    font-weight: bold;
+    font-family:fantasy;
+    padding-left: 3%;
+
+}
+#h1{
+    text-align: center;
+    color: green;
+    font-family:silkscreen;
+
+}
+p{
+    margin-left: 3%;
+    text-decoration:underline;
+}
+a{
+    text-decoration: none;
+    color: darkred;
+    left: 6%;
+    
+}

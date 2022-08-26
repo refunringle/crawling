@@ -52,10 +52,12 @@ def artist(artist_id):
     #     link = f'<a href="{target}">{song.name}</a>'
     #     formatted.append(f"<li>{link}</li>")
     # songs_list = "".join(formatted)
-    return render_template("song.html",songs=artist,nartist=no_songs)
+    return render_template("song.html",songs=artist,nartist = no_songs)
 
-@app.route("/song/<int:song_id>")
+@app.route("/artist/song/<int:song_id>")
 def song(song_id):
+        artist = Songs.query.all()
         song = Songs.query.filter_by(id = song_id).first()
-        lyric =song.lyrics.replace("\n","<br>")
-        return render_template("lyrics.html",lyrics=lyric,song_name=song.name)
+        lyric =song.lyrics.replace("\n","<br>")     
+        return render_template("song.html",lyrics=lyric,song_name=song.name,songs=artist ,songs_=song)
+        

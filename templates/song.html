@@ -2,12 +2,30 @@
 {%block content%}
     <div>
         <h1>songs</h1>
-        <p>we have {{nartist}} artists on our system</p>
-        <ol>
-            <p>This is the list of songs! </p>
+        <p>we have <mark>{{nartist}}</mark> artists on our system</p>
+        <ul>
             {% for song in songs%}
+
             <a href="{{url_for('song',song_id=song.id)}}"><li>{{song.name}}</li></a>
             {%endfor%}
-        </ol>
+        </ul>
     </div>
-    {% endblock%}`
+    {% endblock%}
+    {%block artist%}
+    <center><h1>{{song_name}}</h1></center>
+    <div>
+      
+        {% autoescape off %}
+        <em><center>{{lyrics}}</center></em>
+        {% endautoescape %}
+
+    </div>
+    <style>
+
+body{
+    background-color: cadetblue;
+
+}
+
+    </style>
+    {% endblock%}

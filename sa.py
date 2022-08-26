@@ -7,7 +7,7 @@ from sqlalchemy import Integer , String
 from sqlalchemy.orm import session 
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine('postgresql:///rought1',echo=True,future=True)
+engine = create_engine('postgresql:///rought',echo=True,future=True)
 
 #session =  sessionmaker(bind=engine)
 #session = session()
@@ -16,23 +16,23 @@ engine = create_engine('postgresql:///rought1',echo=True,future=True)
 base = declarative_base()
 
 class Artists(base):
-    __tablename__ = "artist_1"
+    __tablename__ = "artist"
     id = Column(Integer, primary_key = True)
     name = Column(String)
     songs = relationship("Songs", back_populates="artist")
 
 class Songs(base):
-    __tablename__ = "songs_1"
+    __tablename__ = "songs"
     id = Column(Integer, primary_key = True)
     name = Column(String)
     lyrics = Column(String)
-    artist_id = Column(Integer, ForeignKey("artist_1.id"), nullable=False)
+    artist_id = Column(Integer, ForeignKey("artist.id"), nullable=False)
     artist = relationship("Artists", back_populates="songs")
 
 
 def get_session():
 
-    engine = create_engine('postgresql:///rought1',echo=True)
+    engine = create_engine('postgresql:///rought',echo=True)
     base.metadata.create_all(engine)
     Session = sessionmaker(bind = engine)
     session = Session()

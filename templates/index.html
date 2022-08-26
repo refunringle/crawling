@@ -1,22 +1,32 @@
 {% extends "base.html"%}
+
 {%block content%}
+<h5>this is the thing od gcchchchchncd</h5>
+<ol>
+    gdsg,
+    sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa,
+    sgsgs,
+    sgsgs
+</ol>
+{% endblock%}
+
+{%block artist%}
     <div class="roug">
         <h1>Artists</h1>
-        <p>we have {{no_artist}} artists on our system</p>
+        <p>we have <mark>{{no_artist}}</mark> artists on our system</p>
 
-            <ol>
-                <p>This is the list of Artists! </p>
+            <ul>
+                <p>This is the list of Artists! </p>`
                 {% for artist in artists %}
                 <a href="{{url_for("artist", artist_id = artist.id)}}"><li>{{artist.name}}</li></a>
                 {% endfor %}
-            </ol>
-
+            </ul>
     </div>
     <style>
-        body{
-            background-color: cadetblue;
+            body{
+                    background-color: cadetblue;
 
-        }
+                }
 
 
     </style>

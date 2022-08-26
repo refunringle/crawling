@@ -2,7 +2,7 @@ import argparse
 from distutils.log import debug
 import logging
 from unicodedata import name
-
+    
 import requests
 from bs4 import BeautifulSoup 
 from sqlalchemy.orm import Session 
@@ -41,7 +41,7 @@ def artist(url_address):
     soup = BeautifulSoup(response.content, "lxml")
     track=soup.find('table', {'class':'tracklist'})
     headings =track.find_all('h3')
-    for heading in headings[:5]:
+    for heading in headings:
         artist[heading.text] = heading.a['href']
         
     return artist
@@ -52,11 +52,10 @@ def get_songs_list(url):
     soup = BeautifulSoup(response.content, "lxml")
     track=soup.find('table', {'class':'tracklist'})
     links =track.find_all('a')
-    for link in links[:5]:
+    for link in links:
         songs[link.text] = link['href']
 
     return songs
-
 
 def song_lyrics(url):
     response = requests.get(url)
