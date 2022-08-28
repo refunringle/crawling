@@ -1,7 +1,5 @@
 import argparse
-from distutils.log import debug
 import logging
-from unicodedata import name
     
 import requests
 from bs4 import BeautifulSoup 

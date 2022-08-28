@@ -1,13 +1,12 @@
 {% extends "base.html"%}
 
 {%block content%}
-<h5>this is the thing od gcchchchchncd</h5>
-<ol>
-    gdsg,
-    sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa,
-    sgsgs,
-    sgsgs
-</ol>
+<h2>Welcome to the lyrics database. </h2>
+<p class="side-bar" style="text-decoration: none">
+    We regularly crawl various sites on the net to get your the
+    freshest lyrics out there. These are available classified
+    using the artist.
+    </p>
 {% endblock%}
 
 {%block artist%}
@@ -16,9 +15,9 @@
         <p>we have <mark>{{no_artist}}</mark> artists on our system</p>
 
             <ul>
-                <p>This is the list of Artists! </p>`
+                <p>This is the list of Artists! </p>
                 {% for artist in artists %}
-                <a href="{{url_for("artist", artist_id = artist.id)}}"><li>{{artist.name}}</li></a>
+                <a style="text-decoration: none" href="{{url_for("artist", artist_id = artist.id)}}"><li>{{artist.name}}</li></a>
                 {% endfor %}
             </ul>
     </div>
@@ -27,7 +26,5 @@
                     background-color: cadetblue;
 
                 }
-
-
     </style>
     {%endblock%}

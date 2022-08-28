@@ -1,31 +1,46 @@
 {% extends "base.html"%}
 {%block content%}
-    <div>
-        <h1>songs</h1>
-        <p>we have <mark>{{nartist}}</mark> artists on our system</p>
-        <ul>
-            {% for song in songs%}
+<div>
+    <h1>songs</h1>
+    <p>we have <mark>{{nartist}}</mark> artists on our system</p>
+    <ul>
+        {% for song in songs%}
 
-            <a href="{{url_for('song',song_id=song.id)}}"><li>{{song.name}}</li></a>
-            {%endfor%}
-        </ul>
+        <a class="songlink" style="text-decoration: none" href="{{url_for('song',song_id=song.id)}}">
+            <li>{{song.name}}</li>
+        </a>
+        {%endfor%}
+    </ul>
+</div>
+{% endblock%}
+
+
+{%block artist%}
+<div class="lyrics">
+    <div id="spinner-loading" class="d-flex justify-content-center" style="display:none!important;">
+        <div class="spinner-border" role="status">
+        </div>
     </div>
-    {% endblock%}
-    {%block artist%}
-    <center><h1>{{song_name}}</h1></center>
-    <div>
-      
+    <center>
+        <h1 id="song_title">{{song_name}}</h1>
+    </center>
+    <div id="song_lyrics">
+
         {% autoescape off %}
-        <em><center>{{lyrics}}</center></em>
+        <em>
+            <center>{{lyrics}}</center>
+        </em>
         {% endautoescape %}
 
     </div>
-    <style>
+</div>
+<style>
+    body {
+        background-color: cadetblue;
 
-body{
-    background-color: cadetblue;
-
-}
-
-    </style>
-    {% endblock%}
+    }
+    a .songlink{
+        text-decoration: none;
+    }
+</style>
+{% endblock%}

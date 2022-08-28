@@ -1,7 +1,7 @@
-from pydoc import render_doc
-from crawler import song_lyrics
 from flask import Flask ,url_for,render_template
 from flask_sqlalchemy import SQLAlchemy
+
+import time
 
 app = Flask('lyrics')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///lyrics'
@@ -52,6 +52,8 @@ def artist(artist_id):
     #     link = f'<a href="{target}">{song.name}</a>'
     #     formatted.append(f"<li>{link}</li>")
     # songs_list = "".join(formatted)
+    time.sleep(2)
+
     return render_template("song.html",songs=artist,nartist = no_songs)
 
 @app.route("/artist/song/<int:song_id>")
@@ -59,5 +61,6 @@ def song(song_id):
         artist = Songs.query.all()
         song = Songs.query.filter_by(id = song_id).first()
         lyric =song.lyrics.replace("\n","<br>")     
+        time.sleep(2)
         return render_template("song.html",lyrics=lyric,song_name=song.name,songs=artist ,songs_=song)
         
