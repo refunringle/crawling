@@ -1,5 +1,6 @@
-from flask import Flask ,url_for,render_template
+from flask import Flask ,url_for,render_template ,jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_accept import accept
 
 import time
 
@@ -56,11 +57,31 @@ def artist(artist_id):
 
     return render_template("song.html",songs=artist,nartist = no_songs)
 
-@app.route("/artist/song/<int:song_id>")
+@app.route("/song/<int:song_id>")
+@accept("text/html")
 def song(song_id):
-        artist = Songs.query.all()
         song = Songs.query.filter_by(id = song_id).first()
         lyric =song.lyrics.replace("\n","<br>")     
         time.sleep(2)
-        return render_template("song.html",lyrics=lyric,song_name=song.name,songs=artist ,songs_=song)
-        
+        return render_template("songs.html",lyrics=lyric,songs_=song)
+
+@song.support("application/json")
+def song_json(song_id):
+        print("am returning json!....")
+        song = Songs.query.filter_by(id = song_id).first()
+        lyric =song.lyrics
+        ret = dict(song= dict(name=song.name,
+                            lyrics = song.lyrics,
+                            id=song.id,
+                            artist= dict(name=song.artist.name,id=song.artist.id)))
+        return jsonify(ret)
+
+
+
+
+# @app.route("/lyrics/<int:song_id>")
+# def lyrics(song_id):
+#     song = Songs.query.filter_by(id = song_id).first()
+#     time.sleep(2)
+#     return render_template("lyrics.html", 
+#                            song = song) 

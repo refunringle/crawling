@@ -6,9 +6,8 @@
     <ul>
         {% for song in songs%}
 
-        <a class="songlink" style="text-decoration: none" href="{{url_for('song',song_id=song.id)}}">
-            <li>{{song.name}}</li>
-        </a>
+        <li><a class="songlink" style="text-decoration: none" href="{{url_for('song',song_id=song.id)}}">
+            {{song.name}}</a></li>
         {%endfor%}
     </ul>
 </div>
